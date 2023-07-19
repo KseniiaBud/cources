@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  close () {
+    console.log("! Close");
+  }
 }

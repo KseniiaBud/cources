@@ -1,0 +1,23 @@
+.header {
+    background-color: var(--green-100);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 12px 56px;
+    gap: 10px;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.main-header {
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    height: 40px;
+    border-radius: 4px;
+    flex-grow: 1;
+}
+

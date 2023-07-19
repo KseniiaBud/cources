@@ -1,4 +1,15 @@
-.logo-image{
-    width: 50px;
-    height: 50px;
+.logo-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 40px;
+    height: 40px;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
 }

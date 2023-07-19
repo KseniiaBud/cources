@@ -1,0 +1,25 @@
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px 0px 10px 0px;
+}
+
+.btnSearch {
+    width: 50%;
+    padding-left: 5px;
+}
+
+.btnAdd {
+    width: 50%;
+    text-align: end;
+}
+
+.loadMore {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 18px;
+}
