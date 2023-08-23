@@ -1,0 +1,31 @@
+<p-card  class="cource-item" [appCoueceBoundary]="cource.creationDate" [ngClass]="{ 'is-top-rated': cource.topRated == true }">
+    <div >
+        <div class="course-item__header">
+            <div class="title">
+                <h3> {{ cource.title | uppercase }}</h3>
+                <i *ngIf='cource.topRated' class="pi pi-star-fill"></i>
+            </div>
+            <div class="schedule">
+                <span>
+                    <i class="pi pi-clock "></i>
+                    {{ cource.duration | duration }}
+                </span>
+                <span>
+                    <i class="pi pi-calendar"></i>
+                    {{ cource.creationDate | date:'longDate':'ru'}}
+                </span>
+            </div>
+        </div>
+        <div class="course-item__description">
+            <span class="cource-desc">
+                {{ cource.description }}
+            </span>
+            <div class="buttons">
+                <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-text"
+                    (click)="clickEdit(cource)"></p-button>
+                <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger p-button-text"
+                    (click)="del(cource)"></p-button>
+            </div>
+        </div>
+    </div>
+</p-card>
