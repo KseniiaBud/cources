@@ -1,58 +1,69 @@
 import { Component, OnInit } from '@angular/core';
-import { ICourceResponse, ICource } from 'src/app/models/cources';
+import { ICource } from 'src/app/models/cources';
+import { FilterPipe } from '../../pipes/filter.pipe';
 
 @Component({
   selector: 'app-cource-list',
   templateUrl: './cource-list.component.html',
-  styleUrls: ['./cource-list.component.scss']
+  styleUrls: ['./cource-list.component.scss'],
+  providers: [FilterPipe]
 })
 export class CourceListComponent {
   public cources: ICource[] = [];
-  public search: string | undefined;
-
+  public filter_cources: ICource[] = [];
+  public search: string = '';
+  constructor(private filterPipe: FilterPipe) {}
   clickSearch(): void {
     console.log("Поиск по введенному значению: " + this.search);
+    this.filter_cources =  this.filterPipe.transform(this.cources, this.search);
   }
 
   ngOnInit(): void {
+    let cur = new Date();
     this.cources = [
       {
         id: 1,
-        title: "Тема курса",
-        creationDate: (new Date()).toLocaleDateString(),
-        duration: 60,
-        description: "Добавьте пустые обработчики для кнопок. Редактирование курса - используйте @Output(), чтобы вызвать метод в родительском компоненте. Выведите в консоль данные редактируемого курса в методе родительского компонента. Удаление курса – используйте @Output(), чтобы вызвать метод в родительском компоненте. Выведите в консоль id курса в методе родительского компонента. Изучите хуки жизненного цикла ngOnChanges, ngOnInit. Инициируйте свойство, в котором хранится массив курсов, в хуке ngOnInit. Добавьте все хуки жизненного цикла в каком-нибудь компоненте. Поместите вызов console.log() во всех хуках, чтобы понять их последовательность. Используйте ngFor, чтобы итерировать по массиву фейковых данных и передавать каждый курс компоненту отдельного курса."
+        title: "Reprehenderit est veniam elit",
+        creationDate: new Date(),
+        duration: 61,
+        topRated: false,
+        description: "Consectetur veniam non nulla in laboris minim ipsum. Dolor aliqua irure sint do irure magna tempor culpa quis. Deserunt amet occaecat velit sit."
       },
       {
         id: 2,
-        title: "Тема курса 2",
-        creationDate: (new Date()).toLocaleDateString(),
-        duration: 30,
-        description: "Цель: создать страницу видео курсов целиком. Используйте ng команды для генерации компонентов. Используйте статический массив курсов, реализованный как свойство класса компонента курсов.Необходимо сделать разметку + стили + простая логика для компонентов, перечисленных ниже. Не нужно строго придерживаться макета, следуйте расположению элементов в макете и выбранной вами теме. Для ускорения написания разметки и стилей используйте библиотеку компонентов PrimeNG и PrimeFlex."
+        title: "Magna Excepteur aute Deserunt",
+        creationDate: new Date(),
+        duration: 63,
+        topRated: true,
+        description: "Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor."
       },
       {
         id: 3,
-        title: "Тема курса 3",
-        creationDate: (new Date()).toLocaleDateString(),
+        title: "Reprehenderit eiusmod nostrud amet",
+        creationDate: new Date(),
         duration: 20,
-        description: "Описание курса 3 Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 Описание курса 3 "
+        topRated: true,
+        description: "Est consequat deserunt officia fugiat culpa in aliquip consectetur. Est nostrud occaecat cillum elit officia officia ea magna et minim officia commodo sunt. Deserunt duis minim magna nostrud enim enim commodo sit elit nostrud cillum aliquip est qui."
       },
       {
         id: 4,
-        title: "Тема курса 4",
-        creationDate: (new Date()).toLocaleDateString(),
-        duration: 30,
-        description: "Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4 Описание курса 4"
+        title: "Sit voluptate eiusmod ea",
+        creationDate: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - 28),
+        duration: 125,
+        topRated: false,
+        description: "Commodo id sunt sunt adipisicing et aliquip voluptate laborum consectetur. Occaecat nisi sint exercitation ullamco adipisicing irure est in consectetur aute voluptate. Ea pariatur dolor anim ea reprehenderit ut non occaecat magna adipisicing exercitation nisi consequat."
       },
       {
         id: 5,
-        title: "Тема курса 5",
-        creationDate: (new Date()).toLocaleDateString(),
-        duration: 30,
-        description: "Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 Описание курса 5 "
-      },
-      
-    ]
+        title: "Duis mollit reprehenderit ad",
+        creationDate: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 3),
+        duration: 180,
+        topRated: true,
+        description: "Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud."
+      }
+    ];
+
+    this.filter_cources = this.cources;
   }
 
   public edit(cource: ICource): void {

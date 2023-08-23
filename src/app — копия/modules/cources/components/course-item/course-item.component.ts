@@ -7,14 +7,7 @@ import { ICource, ICourceResponse } from 'src/app/models/cources';
   styleUrls: ['./course-item.component.scss']
 })
 export class CourseItemComponent {
-  @Input() cource: ICource = {
-    id: 0,
-    title: '',
-    creationDate: new Date(),
-    topRated: false,
-    duration: 0,
-    description: ''
-  };
+  @Input() cources: ICource[] = [];
   @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
   @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
 

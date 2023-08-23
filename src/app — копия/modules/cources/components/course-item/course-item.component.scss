@@ -1,5 +1,10 @@
 .cource-item {
-    background: #FFFFFF;
+    padding: 24px;
+    width: Fixed (1, 328px);
+    height: Hug (144px);
+    border-radius: 8px;
+    gap: 16px;
+    background: #c3f1b7;
 }
 
 .course-item__header {
@@ -18,28 +23,13 @@
     align-items: center;
     padding: 0px;
     gap: 12px;
-
-    .h3 {
-        font-family: Inter;
-        font-size: 24px;
-        font-weight: 500;
-        line-height: 32px;
-        letter-spacing: 0em;
-        text-align: left;
-        width: 336px;
-        height: 32px;
-        color: #1E293B;
-    }
-
 }
 
 .schedule {
     width: 30%;
-    flex-direction: row;
     text-align: end;
     padding: 0px;
     gap: 12px;
-
 }
 
 .cource-desc {
@@ -56,19 +46,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: Fill (1, 280px);
-    height: Hug (48px);
-    gap: 24px;
-
 }
 
 .buttons {
     width: 10%;
     text-align: end;
-}
-
-::ng-deep .is-top-rated {
-    .p-card {
-        background-color: #EFF6FF;
-    }
 }
