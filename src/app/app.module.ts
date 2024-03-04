@@ -7,7 +7,8 @@ import { CoreModule } from './modules/core/core.module';
 import { CourcesModule } from './modules/cources/cources.module';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
-
+import { LoginPagesModule } from './modules/login-pages/login-pages.module';
+import { ButtonModule } from 'primeng/button';
 registerLocaleData(localeRu);
 
 @NgModule({
@@ -18,7 +19,9 @@ registerLocaleData(localeRu);
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    CourcesModule
+    CourcesModule,
+    LoginPagesModule,
+    ButtonModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]

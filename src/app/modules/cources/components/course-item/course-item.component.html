@@ -1,5 +1,6 @@
-<p-card  class="cource-item" [appCoueceBoundary]="cource.creationDate" [ngClass]="{ 'is-top-rated': cource.topRated == true }">
-    <div >
+<p-card class="cource-item" [appCoueceBoundary]="cource.creationDate"
+    [ngClass]="{ 'is-top-rated': cource.topRated == true }">
+    <div>
         <div class="course-item__header">
             <div class="title">
                 <h3> {{ cource.title | uppercase }}</h3>
@@ -23,7 +24,7 @@
             <div class="buttons">
                 <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-text"
                     (click)="clickEdit(cource)"></p-button>
-                <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger p-button-text"
+                <p-button id="cource.id" icon="pi pi-trash" styleClass="p-button-rounded p-button-danger p-button-text"
                     (click)="del(cource)"></p-button>
             </div>
         </div>

@@ -23,7 +23,7 @@ import { MenubarModule } from 'primeng/menubar';
     HeaderComponent,
     FooterComponent,
     LogoComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
   ]
 })
 export class CoreModule { }
