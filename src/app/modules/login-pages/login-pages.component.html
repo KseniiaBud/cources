@@ -1,0 +1,31 @@
+  <div class="login-form_body">
+    <div class="login-form-wrapper">
+      <div class="login-form-header">
+        <p class="login-form-header p">Вход</p>
+      </div>
+      <div class="login-form-body">
+        <label>Email*</label>
+        <input 
+          class="input"
+          [(ngModel)]="email"
+          type="email"
+          pInputText
+          placeholder="Например user@domain.com"
+          required>
+      </div>
+      <div class="login-form-body">
+        <label>Пароль*</label>
+        <input 
+          class="input"
+          pInputText
+          type="password"
+          [(ngModel)]="password"
+          placeholder="Ваш пароль"
+          required>
+      </div>
+      <div class="login-form-button">
+        <button pButton label="Забыли пароль?" class="p-button-link"></button>
+        <button pButton id="loginBtn" class="form_auth_button" (click)="login()" >Войти</button>
+      </div>
+    </div>
+  </div>
