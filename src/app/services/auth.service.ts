@@ -12,15 +12,12 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.clear();
+    localStorage.removeItem("login");
+    localStorage.removeItem("password");
   }
 
   public isAuthenticated(): boolean {
-    if (localStorage.getItem("login")) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!localStorage.getItem("login");
   }
 
   public getUserInfo(): string|null {

@@ -1,26 +1,29 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { ICource, ICourceResponse } from 'src/app/models/cources';
+import { ICource } from 'src/app/models/cources';
 import { CourcesService } from 'src/app/services/cources.service';
 
 @Component({
-  selector: 'app-course-item',
-  templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.scss'],
+  selector: 'app-cource-add',
+  templateUrl: './cource-add.component.html',
+  styleUrls: ['./cource-add.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseItemComponent {
+export class CourceAddComponent {
+[x: string]: any;
   @Input() cource: ICource = {
     id: 0,
     title: '',
     creationDate: new Date(),
     topRated: false,
     duration: 0,
-    description: ''
+    description: '',
+    autors: ""
   };
   @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
   @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
+  @Output() public cancel: EventEmitter<ICource> = new EventEmitter<ICource>();
   visible: boolean = false;
+  
 
   constructor(
     private readonly courcesService: CourcesService
@@ -63,5 +66,12 @@ export class CourseItemComponent {
 
   ngOnDestroy() {
     console.log("ngOnDestroy");
+  }
+
+  cancelAction() {
+    this.cancel.emit();
+  }
+  saveCourse() {
+
   }
 }

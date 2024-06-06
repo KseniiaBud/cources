@@ -9,24 +9,25 @@
         <p-button label="Поиск" (click)="clickSearch()"></p-button>
     </div>
     <div class="btnAdd">
-        <p-button icon="pi pi-plus" label="Добавить курс"></p-button>
+        <p-button icon="pi pi-plus" label="Добавить курс" (click)="addCourcesItem()"></p-button>
     </div>
 </div>
-<div>
-    <div class="cources-container" *ngFor="let cource of cources | orderBy: 'creationDate'">
-        <app-course-item [cource]="cource" (edit)="edit($event)" (delete)="delete($event)"></app-course-item>
+<div *ngIf="!addCource">
+    <div>
+        <div class="cources-container" *ngFor="let cource of cources | orderBy: 'creationDate'">
+            <app-course-item [cource]="cource" (edit)="edit($event)" (delete)="delete($event)"></app-course-item>
+        </div>
+    </div>
+    <div class="noData" *ngIf="!cources.length">
+        <span>
+            Нет данных
+        </span>
+    </div>
+    <div class="loadMore">
+        <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
+            (click)="loadMore()"></p-button>
     </div>
 </div>
-<div class="noData" *ngIf="!cources.length">
-    <span>
-        Нет данных
-    </span>
-</div>
-<div class="loadMore">
-    <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
-        (click)="loadMore()"></p-button>
-</div>
-
 
 <p-confirmDialog #cd key="cd" appendTo="body">
     <ng-template pTemplate="headless" let-message>
@@ -44,3 +45,9 @@
         </div>
     </ng-template>
 </p-confirmDialog>
+
+<app-cource-add 
+    #addCourse 
+    *ngIf="addCource"
+    >
+</app-cource-add>
