@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ICource } from 'src/app/models/cources';
 import { FilterPipe } from '../../pipes/filter.pipe';
 import { CourcesService } from 'src/app/services/cources.service';
@@ -8,12 +8,14 @@ import { ConfirmationService } from 'primeng/api';
   selector: 'app-cource-list',
   templateUrl: './cource-list.component.html',
   styleUrls: ['./cource-list.component.scss'],
-  providers: [FilterPipe]
+  providers: [FilterPipe],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class CourceListComponent {
   public cources: ICource[] = [];
   public filter_cources: ICource[] = [];
   public search: string = '';
+  public addCource:boolean = false;
   constructor(
     private filterPipe: FilterPipe,
     private readonly courcesService: CourcesService,
@@ -54,6 +56,10 @@ export class CourceListComponent {
 
   public loadMore(): void {
     console.log("Загрузить еще")
+  }
+
+  public addCourcesItem(): void {
+    this.addCource = true;
   }
 }
 
