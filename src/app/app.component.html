@@ -1,9 +1,3 @@
-<app-header  [isAuthenticated]="isAuthenticated" [login]="login" (close)="logout()"></app-header>
-<div class="page" *ngIf="isAuthenticated">
-    <app-breadcrumbs></app-breadcrumbs>
-    <app-cource-list></app-cource-list>
-</div>
-<div class="page" *ngIf="!isAuthenticated">
-    <app-login-pages (userLoginInfo)="userLoginInfo($event)"></app-login-pages>
-</div>
+<app-header  [isAuthenticated]="isAuthenticated" (close)="logout()"></app-header>
+<router-outlet></router-outlet>
 <app-footer></app-footer>

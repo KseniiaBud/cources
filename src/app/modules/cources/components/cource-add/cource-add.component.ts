@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICource } from 'src/app/models/cources';
+import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
 import { CourcesService } from 'src/app/services/cources.service';
 
 @Component({
@@ -9,8 +11,7 @@ import { CourcesService } from 'src/app/services/cources.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourceAddComponent {
-[x: string]: any;
-  @Input() cource: ICource = {
+  public cource: ICource = {
     id: 0,
     title: '',
     creationDate: new Date(),
@@ -19,26 +20,29 @@ export class CourceAddComponent {
     description: '',
     autors: ""
   };
-  @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
-  @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
-  @Output() public cancel: EventEmitter<ICource> = new EventEmitter<ICource>();
-  visible: boolean = false;
-  
+  public pageHeader: string = "Новый курс";
+  @Input() courceId!: number;
 
   constructor(
-    private readonly courcesService: CourcesService
+    private readonly courcesService: CourcesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbsService: BreadcrumbsService,
   ) { }
-
-  clickEdit(cource: ICource) {
-    this.edit.emit(cource);
-  }
-  del(cource: ICource) {
-    debugger
-         this.delete.emit(cource);
-  }
 
   ngOnInit() {
     console.log("ngOnInit");
+    const { courceId } = this.activatedRoute.snapshot.params;
+    if (courceId) {
+      this.pageHeader = "Редактирование курса";
+      this.cource = this.courcesService.getCourceById(+courceId);
+      this.courceId = +courceId;
+    }
+
+    this.breadcrumbsService.data = {
+      home: this.breadcrumbsService.home,
+      model: [{ label: this.cource?.title != "" ? this.cource.title : this.pageHeader }],
+    };
   }
 
   ngOnChanges() {
@@ -69,9 +73,15 @@ export class CourceAddComponent {
   }
 
   cancelAction() {
-    this.cancel.emit();
+    this.router.navigate(['cources']);
   }
   saveCourse() {
-
+    debugger
+    if (!this.courceId && this.courceId != 0) {
+      this.courcesService.createCource(this.cource);
+    } else {
+      this.courcesService.updateCource(this.cource);
+    }
+    this.router.navigate(['cources']);
   }
 }

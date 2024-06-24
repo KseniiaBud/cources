@@ -1,4 +1,4 @@
-<div class="search">
+<div class="search" *ngIf="!addCource">
     <div>
         <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
@@ -12,18 +12,18 @@
         <p-button icon="pi pi-plus" label="Добавить курс" (click)="addCourcesItem()"></p-button>
     </div>
 </div>
-<div *ngIf="!addCource">
+<div>
     <div>
-        <div class="cources-container" *ngFor="let cource of cources | orderBy: 'creationDate'">
-            <app-course-item [cource]="cource" (edit)="edit($event)" (delete)="delete($event)"></app-course-item>
+        <div class="cources-container" *ngFor="let cource of filter_cources | orderBy: 'creationDate'">
+            <app-course-item [cource]="cource" (edit)="editCourcesItem($event)" (delete)="delete($event)"></app-course-item>
         </div>
     </div>
-    <div class="noData" *ngIf="!cources.length">
+    <div class="noData" *ngIf="!filter_cources.length">
         <span>
             Нет данных
         </span>
     </div>
-    <div class="loadMore">
+    <div class="loadMore"  *ngIf="filter_cources.length">
         <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
             (click)="loadMore()"></p-button>
     </div>
@@ -45,9 +45,9 @@
         </div>
     </ng-template>
 </p-confirmDialog>
-
+<!-- 
 <app-cource-add 
     #addCourse 
-    *ngIf="addCource"
+    [courceId]="selectedCource.id"
     >
-</app-cource-add>
+</app-cource-add> -->

@@ -20,7 +20,7 @@ export class AuthService {
     return !!localStorage.getItem("login");
   }
 
-  public getUserInfo(): string|null {
-    return localStorage.getItem("login");
+  public getUserInfo(): string {
+    return localStorage.getItem('login') || '';
   }
 }
