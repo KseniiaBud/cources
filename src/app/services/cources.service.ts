@@ -56,14 +56,20 @@ export class CourcesService {
   }
 
   public getCourceById(id: number): ICource {
-    return this.cources[id - 1];
+    const cource = this.cources.find((c) => c.id === id);
+    return cource || ({} as ICource);;
   }
 
   public createCource(courceItem: ICource): void {
     this.cources.push(courceItem);
   }
   public updateCource(courceItem: ICource): void {
-
+    debugger
+    for (let i = 0; i < this.cources.length; i++) {
+      if (this.cources[i].id == courceItem.id) {
+        this.cources[i] = courceItem;
+      }
+    }
   }
   public deleteCource(id: number): void {
     let list = this.cources;

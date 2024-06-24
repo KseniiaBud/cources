@@ -15,10 +15,13 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { AutorsComponent } from '../../shared/components/autors/autors.component';
-
+import { CourcesRoutingModule } from './cources-routing.module';
+import { CoreModule } from '../core/core.module';
+import { CourcesComponent } from './cources.component';
+import { MenubarModule } from 'primeng/menubar';
+import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs.component';
 @NgModule({
   declarations: [
     CourceListComponent,
@@ -28,9 +31,13 @@ import { AutorsComponent } from '../../shared/components/autors/autors.component
     CoueceBoundaryDirective,
     FilterPipe,
     OrderByPipe,
+    CourcesComponent,
+    
   ],
   imports: [
+    BreadcrumbsComponent,
     CommonModule,
+    MenubarModule,
     InputTextModule,
     InputTextareaModule,
     InputNumberModule,
@@ -38,14 +45,17 @@ import { AutorsComponent } from '../../shared/components/autors/autors.component
     ButtonModule,
     CardModule,
     ConfirmDialogModule,
-    BrowserAnimationsModule,
     CalendarModule,
     AutorsComponent,
+    CourcesRoutingModule,
+    CoreModule
   ],
   providers: [ConfirmationService],
   exports: [
-    CourceListComponent, 
+    CourceListComponent,
     CourceAddComponent,
+    CourcesComponent
   ]
 })
+
 export class CourcesModule { }

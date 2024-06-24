@@ -9,6 +9,7 @@ import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { LoginPagesModule } from './modules/login-pages/login-pages.module';
 import { ButtonModule } from 'primeng/button';
+
 registerLocaleData(localeRu);
 
 @NgModule({

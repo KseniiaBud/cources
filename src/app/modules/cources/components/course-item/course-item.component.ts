@@ -30,8 +30,7 @@ export class CourseItemComponent {
     this.edit.emit(cource);
   }
   del(cource: ICource) {
-    debugger
-         this.delete.emit(cource);
+    this.delete.emit(cource);
   }
 
   ngOnInit() {
