@@ -65,8 +65,8 @@ export class CourceListComponent implements OnInit {
       _page: this.page,
       _per_page: this.size,
       _sort: 'creationDate',
-      // title: this.search,
-      q: this.search,
+      title: this.search,
+      // q: this.search,
     };
 
     this.courcesService.getCources(params).subscribe((response) => {
