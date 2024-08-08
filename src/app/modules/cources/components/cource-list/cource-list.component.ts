@@ -1,5 +1,5 @@
 import { ConfirmationService } from 'primeng/api';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ICource } from 'src/app/models/cources';
 import { FilterPipe } from '../../pipes/filter.pipe';
 import { CourcesService } from 'src/app/services/cources.service';
@@ -31,11 +31,11 @@ export class CourceListComponent implements OnInit {
   public nextPage = 0;
 
   constructor(
-    private filterPipe: FilterPipe,
     private readonly courcesService: CourcesService,
     private confirmationService: ConfirmationService,
     private router: Router,
     private breadcrumbsService: BreadcrumbsService,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   clickSearch(): void {
@@ -65,15 +65,16 @@ export class CourceListComponent implements OnInit {
       _page: this.page,
       _per_page: this.size,
       _sort: 'creationDate',
-      title: this.search,
-      // q: this.search,
+      // поиск по полному совпадению(зависит так же от регистра в базе), не работает по `ci(contains(${this.search}))`
+      // title: `ci(contains(${this.search}))`
+      title: this.search
     };
 
     this.courcesService.getCources(params).subscribe((response) => {
-      debugger
       this.cources = this.cources.concat(response.data as ICource[]);
       this.totalCount = response.pages;
       this.nextPage = response.next;
+      this.changeDetector.detectChanges();
     });
   }
   public addCourcesItem(): void {

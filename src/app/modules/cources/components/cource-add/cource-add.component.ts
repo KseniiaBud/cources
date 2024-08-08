@@ -75,7 +75,6 @@ export class CourceAddComponent implements OnInit {
     if (!this.courceId && this.courceId != 0) {
       this.courcesService.createCource(this.cource).subscribe({
         next: (data) => {
-          debugger
         },
       });
     } else {
