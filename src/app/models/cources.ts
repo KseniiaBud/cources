@@ -9,6 +9,9 @@ export interface ICource {
 }
 
 export interface ICourceResponse {
+    data: ICource[];
     content: ICource[];
-    totalElements: number;
+    pages: number;
+    next: number;
 }
+

@@ -1,4 +1,4 @@
-<div class="search" *ngIf="!addCource">
+<div class="search">
     <div>
         <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
@@ -12,23 +12,24 @@
         <p-button icon="pi pi-plus" label="Добавить курс" (click)="addCourcesItem()"></p-button>
     </div>
 </div>
+
 <div>
-    <div>
-        <div class="cources-container" *ngFor="let cource of filter_cources | orderBy: 'creationDate'">
-            <app-course-item [cource]="cource" (edit)="editCourcesItem($event)" (delete)="delete($event)"></app-course-item>
-        </div>
+    <div class="cources-container" *ngIf="cources.length > 0">
+        <app-course-item *ngFor="let cource of cources" [cource]="cource" (edit)="editCourcesItem($event)"
+            (delete)="delete($event)"></app-course-item>
     </div>
-    <div class="noData" *ngIf="!filter_cources.length">
+
+    <div class="loadMore" *ngIf="nextPage">
+        <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
+            (click)="loadMore()"></p-button>
+    </div>
+
+    <div class="noData" *ngIf="cources.length === 0">
         <span>
             Нет данных
         </span>
     </div>
-    <div class="loadMore"  *ngIf="filter_cources.length">
-        <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
-            (click)="loadMore()"></p-button>
-    </div>
 </div>
-
 <p-confirmDialog #cd key="cd" appendTo="body">
     <ng-template pTemplate="headless" let-message>
         <div class="flex flex-column align-items-center p-5 surface-overlay border-round">
@@ -38,16 +39,10 @@
             </div>
             <span class="font-bold text-2xl block mb-2 mt-4">{{ message.header }}</span>
             <p class="mb-0">{{ message.message }}</p>
-            <!-- <div class="flex align-items-center gap-2 mt-4">
+            <div class="flex align-items-center gap-2 mt-4">
                 <button pButton label="Удалить" (click)="cd.accept()" class="w-8rem"></button>
                 <button pButton label="Отмена" (click)="cd.reject()" class="p-button-outlined w-8rem "></button>
-            </div> -->
+            </div>
         </div>
     </ng-template>
 </p-confirmDialog>
-<!-- 
-<app-cource-add 
-    #addCourse 
-    [courceId]="selectedCource.id"
-    >
-</app-cource-add> -->

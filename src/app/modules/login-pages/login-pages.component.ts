@@ -13,7 +13,13 @@ export class LoginPagesComponent {
   public email: string = "";
   public password: string = "";
   login(): void {
-    this.authService.login(this.email, this.password);
-    this.router.navigate(['/cources']);
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (data) => {
+        localStorage.setItem('auth_token', data[0].fakeToken);
+        this.router.navigate(['/cources']);
+      }
+    });
+
   }
 }

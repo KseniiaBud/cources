@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ICource } from 'src/app/models/cources';
 import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
 import { CourcesService } from 'src/app/services/cources.service';
@@ -10,18 +11,10 @@ import { CourcesService } from 'src/app/services/cources.service';
   styleUrls: ['./cource-add.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourceAddComponent {
-  public cource: ICource = {
-    id: 0,
-    title: '',
-    creationDate: new Date(),
-    topRated: false,
-    duration: 0,
-    description: '',
-    autors: ""
-  };
+export class CourceAddComponent implements OnInit {
+  public cource = {} as ICource;
   public pageHeader: string = "Новый курс";
-  @Input() courceId!: number;
+  public courceId = undefined as unknown as number;
 
   constructor(
     private readonly courcesService: CourcesService,
@@ -31,11 +24,14 @@ export class CourceAddComponent {
   ) { }
 
   ngOnInit() {
-    console.log("ngOnInit");
+    this.pageHeader = "Редактирование курса";
+
     const { courceId } = this.activatedRoute.snapshot.params;
     if (courceId) {
-      this.pageHeader = "Редактирование курса";
-      this.cource = this.courcesService.getCourceById(+courceId);
+      this.courcesService.getCourceById(Number(courceId)).subscribe((data) => {
+        this.cource = data[0];
+        this.cource.creationDate = new Date(data[0].creationDate);
+      });
       this.courceId = +courceId;
     }
 
@@ -76,9 +72,12 @@ export class CourceAddComponent {
     this.router.navigate(['cources']);
   }
   saveCourse() {
-    debugger
     if (!this.courceId && this.courceId != 0) {
-      this.courcesService.createCource(this.cource);
+      this.courcesService.createCource(this.cource).subscribe({
+        next: (data) => {
+          debugger
+        },
+      });
     } else {
       this.courcesService.updateCource(this.cource);
     }

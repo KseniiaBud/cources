@@ -9,20 +9,25 @@ import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Input() isAuthenticated:boolean=false;
+  @Input() isAuthenticated: boolean = false;
   @Output() close = new EventEmitter();
   constructor(
     private authService: AuthService,
     private router: Router,
-    private breadcrumbsService:BreadcrumbsService
-  ) {  }
+    private breadcrumbsService: BreadcrumbsService
+  ) { }
+  public user = "";
 
-  
   get isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
-  get getUserInfo(): string {
-    return this.authService.getUserInfo();
+
+  ngOnInit(): void {
+    this.authService.getUserInfo().subscribe({
+      next: (data) => {
+        this.user = data[0].firstName + " " + data[0].lastName;
+      },
+    });
   }
   logout() {
     console.log("Выход " + localStorage.getItem("login"));

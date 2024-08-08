@@ -9,6 +9,9 @@ import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { LoginPagesModule } from './modules/login-pages/login-pages.module';
 import { ButtonModule } from 'primeng/button';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 registerLocaleData(localeRu);
 
@@ -23,8 +26,20 @@ registerLocaleData(localeRu);
     CourcesModule,
     LoginPagesModule,
     ButtonModule,
+    HttpClientModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'ru'
+    },
+    provideAnimations(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

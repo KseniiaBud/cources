@@ -1,26 +1,28 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IUser } from '../models/userAuth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor() { }
+  constructor(
+    private readonly httpClient: HttpClient
+  ) { }
 
-  public login(login: string, password:string): void {
-    localStorage.setItem("login", login);
-    localStorage.setItem("password", password);
+  public login(login: string, password:string) {
+    return this.httpClient.get<IUser[]>(`/users?email=${login}&password=${password}`);
   }
 
   public logout(): void {
-    localStorage.removeItem("login");
-    localStorage.removeItem("password");
+    localStorage.removeItem('auth_token');
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem("login");
+    return !!localStorage.getItem("auth_token");
   }
 
-  public getUserInfo(): string {
-    return localStorage.getItem('login') || '';
+  public getUserInfo() {
+    return this.httpClient.get<IUser[]>(`/users?token=${localStorage.getItem('auth_token')}`);
   }
 }
