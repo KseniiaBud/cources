@@ -16,7 +16,7 @@ export class LoginPagesComponent {
 
     this.authService.login(this.email, this.password).subscribe({
       next: (data) => {
-        localStorage.setItem('auth_token', data[0].fakeToken);
+        localStorage.setItem('auth_token', data.fakeToken);
         this.router.navigate(['/cources']);
       }
     });
