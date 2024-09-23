@@ -2,7 +2,7 @@
     <app-logo class="app-logo"></app-logo>
     <div class="flex main-header" *ngIf="isLoggedIn">
         <i class="pi pi-user"></i>
-        <p>{{ user }}</p>
+        <p>{{ (userInfo | async)?.[0]?.firstName }} {{ (userInfo | async)?.[0]?.lastName }}</p>
         <p-button label="Выход" (click)="logout()" styleClass="p-button-secondary p-button-text"
             icon="pi pi-sign-out"></p-button>
     </div>

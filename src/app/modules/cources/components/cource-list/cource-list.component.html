@@ -1,19 +1,13 @@
 <div class="search">
-    <div>
-        <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" placeholder="Поиск" pInputText [(ngModel)]="search" />
-        </span>
-    </div>
-    <div class="btnSearch">
-        <p-button label="Поиск" (click)="clickSearch()"></p-button>
+    <div class="app-search">
+        <app-search (search)="onSearch($event)"></app-search>
     </div>
     <div class="btnAdd">
         <p-button icon="pi pi-plus" label="Добавить курс" (click)="addCourcesItem()"></p-button>
     </div>
 </div>
 
-<div>
+<div *ngIf="(cources$ | async) || [] as cources">
     <div class="cources-container" *ngIf="cources.length > 0">
         <app-course-item *ngFor="let cource of cources" [cource]="cource" (edit)="editCourcesItem($event)"
             (delete)="delete($event)"></app-course-item>

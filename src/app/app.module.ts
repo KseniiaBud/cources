@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { LoaderInterceptor } from './services/loader.interceptor';
 
 registerLocaleData(localeRu);
 
@@ -38,6 +39,11 @@ registerLocaleData(localeRu);
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true 
     },
   ],
   bootstrap: [AppComponent]
