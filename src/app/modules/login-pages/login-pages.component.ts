@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,18 +9,19 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login-pages.component.scss']
 })
 export class LoginPagesComponent {
-  constructor(private router: Router, private authService: AuthService) {}
+  subscriptions: any;
+  constructor(private router: Router, private authService: AuthService) { }
   @Output() userLoginInfo = new EventEmitter();
-  public email: string = "";
-  public password: string = "";
-  login(): void {
-
-    this.authService.login(this.email, this.password).subscribe({
+  login(loginForm: NgForm): void {
+    this.authService.login(loginForm.value['email'], loginForm.value['password']).subscribe({
       next: (data) => {
-        localStorage.setItem('auth_token', data.fakeToken);
-        this.router.navigate(['/cources']);
+        if (data && data.length > 0) {
+          localStorage.setItem('auth_token', data[0].fakeToken);
+          this.router.navigate(['/cources']);
+        } else {
+          console.log("Ошибка входа");
+        }
       }
-    });
-
+    })
   }
 }
