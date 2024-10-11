@@ -11,7 +11,7 @@ import { LoginPagesModule } from './modules/login-pages/login-pages.module';
 import { ButtonModule } from 'primeng/button';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { LoaderInterceptor } from './services/loader.interceptor';
 
 registerLocaleData(localeRu);
@@ -22,6 +22,7 @@ registerLocaleData(localeRu);
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     CourcesModule,

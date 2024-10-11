@@ -5,7 +5,7 @@ import { CourceAddComponent } from './components/cource-add/cource-add.component
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import { DurationPipe } from './pipes/duration.pipe';
@@ -42,6 +42,7 @@ import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs
     InputTextareaModule,
     InputNumberModule,
     FormsModule,
+    ReactiveFormsModule,
     ButtonModule,
     CardModule,
     ConfirmDialogModule,

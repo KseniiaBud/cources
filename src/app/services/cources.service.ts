@@ -27,8 +27,8 @@ export class CourcesService {
     return this.httpClient.get<ICourceResponse>(`/videocourses`, { params });
   }
 
-  public getCourceById(id: number): Observable<ICource[]> {
-    return this.httpClient.get<ICource[]>(`/videocourses?${id}`);
+  public getCourceById(id: string): Observable<ICource[]> {
+    return this.httpClient.get<ICource[]>(`/videocourses?id=${id}`);
   }
 
   public createCource(courceItem: ICource): Observable<ICource> {

@@ -1,12 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; 
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-autors',
   standalone: true,
   templateUrl: './autors.component.html',
   styleUrls: ['./autors.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [ AutoCompleteModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class AutorsComponent {
 
