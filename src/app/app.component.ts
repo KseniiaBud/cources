@@ -20,9 +20,5 @@ export class AppComponent {
     this.isAuthenticated = this.authService.isAuthenticated();
     console.log("Выполнен вход в систему!");
   }
-  logout() {
-    this.authService.logout();
-    this.login = "";
-    this.isAuthenticated = this.authService.isAuthenticated();
-  }
+
 }

@@ -27,13 +27,12 @@ export class CourcesService {
     return this.httpClient.get<ICourceResponse>(`/videocourses`, { params });
   }
 
-  public getCourceById(id: string): Observable<ICource[]> {
-    return this.httpClient.get<ICource[]>(`/videocourses?id=${id}`);
+  public getCourceById(id: string): Observable<ICource> {
+    return this.httpClient.get<ICource>(`/videocourses?id=${id}`).pipe(map((cource: ICource) => cource));
   }
 
   public createCource(courceItem: ICource): Observable<ICource> {
-    courceItem.id = Math.random();
-    return this.httpClient.post<ICource>(`/videocourses/`, courceItem);
+    return this.httpClient.post<ICource>(`/videocourses/`, { ...courceItem, id: Math.random()});
   }
   public updateCource(courceItem: ICource): Observable<ICource> {
     return this.httpClient.put<ICource>(`/videocourses/${courceItem.id}`, courceItem);

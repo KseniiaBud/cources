@@ -1,33 +1,30 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { Store } from '@ngrx/store';
+import { userGetInfo, userLogout } from 'src/app/store/cources/actions/user.actions';
+import { selectUsers } from 'src/app/store/cources/selectors/user.selectors';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   constructor(
-    private authService: AuthService,
+    private store: Store,
     private router: Router,
   ) { }
 
-  public userInfo = this.authService.getUserInfo();
+  public userInfo$ = this.store.select(selectUsers);
 
-  @Input() isAuthenticated: boolean = false;
-  @Output() close = new EventEmitter();
-
-
-  get isLoggedIn(): boolean {
-    // debugger
-    return this.authService.isAuthenticated();
+  ngOnInit() {
+    this.store.dispatch(userGetInfo());
+    debugger
   }
 
   logout() {
-    console.log("Выход " + localStorage.getItem("login"));
-    this.close.emit();
-    this.authService.logout();
+    this.store.dispatch(userLogout());
     this.router.navigate(['/login']);
   }
+  
 }

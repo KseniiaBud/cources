@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take, tap } from 'rxjs';
-import { ICource } from 'src/app/models/cources';
+import { Store } from '@ngrx/store';
+import { map, tap } from 'rxjs';
 import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
-import { CourcesService } from 'src/app/services/cources.service';
+import { createCource, getCourceById, updateCource } from 'src/app/store/cources/actions/cources-actions.actions';
+import { selectCource, selectCources } from 'src/app/store/cources/selectors/cources-selectors.selectors';
 
 @Component({
   selector: 'app-cource-add',
@@ -13,7 +14,7 @@ import { CourcesService } from 'src/app/services/cources.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourceAddComponent implements OnInit {
-  public cource: ICource = {} as ICource;
+  public cource =  this.store.select(selectCource);
   public pageHeader: string = "Новый курс";
   public courceId = undefined as unknown as number;
 
@@ -25,34 +26,28 @@ export class CourceAddComponent implements OnInit {
     authors: [null],
   });
   constructor(
-    private readonly courcesService: CourcesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private breadcrumbsService: BreadcrumbsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store,
   ) { }
 
   ngOnInit() {
     this.pageHeader = "Редактирование курса";
     const { courceId } = this.activatedRoute.snapshot.params;
     if (courceId) {
-      this.courcesService
-        .getCourceById(courceId)
-        .pipe(take(1))
-        .subscribe((data) => {
-          data[0].creationDate = new Date(data[0].creationDate);
-          this.courceAddForm.patchValue(data[0]);
-          this.cource = data[0];
-        });
       this.courceId = +courceId;
+      this.store.dispatch(getCourceById({ id: courceId }));
     }
-
     this.breadcrumbsService.data = {
       home: this.breadcrumbsService.home,
-      model: [{ label: this.cource?.title != "" ? this.cource.title : this.pageHeader }],
+      model: [{ label: this.pageHeader }],
     };
+
   }
 
+ 
   get title(): FormControl {
     return this.courceAddForm.get('title') as FormControl;
   }
@@ -106,18 +101,10 @@ export class CourceAddComponent implements OnInit {
   saveCourse() {
     if (!this.courceAddForm.valid) return;
     if (!this.courceId && this.courceId != 0) {
-      this.courcesService.createCource(this.courceAddForm.value).pipe(take(1)).subscribe({
-        next: (data) => {
-          this.router.navigate(['cources']);
-        },
-      });
+      this.store.dispatch(createCource({ cource: this.courceAddForm.value }));
     } else {
-      this.courcesService.updateCource({...this.cource, ...this.courceAddForm.value}).subscribe({
-        next: (data) => {
-          this.router.navigate(['cources']);
-        },
-      });
+      // this.store.dispatch(updateCource({...this.cource, ...this.courceAddForm.value}));
     }
-    
+
   }
 }
