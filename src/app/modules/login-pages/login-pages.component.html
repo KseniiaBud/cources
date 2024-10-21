@@ -1,0 +1,24 @@
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+  <p-card class="login">
+    <div class="login-form_body">
+      <div class="login-form-wrapper">
+        <h3 class="mt-0">Вход</h3>
+        <div class="login-form-body">
+          <label>Email*</label>
+          <input type="email" class="input" ngModel name="email" pInputText placeholder="Например user@domain.com"
+            required pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$">
+        </div>
+        <div class="login-form-body">
+          <label>Пароль*</label>
+          <input class="input" pInputText type="password" ngModel name="password" placeholder="Ваш пароль" required
+            maxlength="20">
+        </div>
+        <div class="login-form-button">
+          <button pButton label="Забыли пароль?" class="p-button-link"></button>
+          <button pButton id="loginBtn" type="submit" [disabled]="loginForm.invalid"
+            class="form_auth_button">Войти</button>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</form>

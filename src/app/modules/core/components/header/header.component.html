@@ -1,1 +1,9 @@
-<p>header works!</p>
+<header class="flex header py-2 px-2">
+    <app-logo class="app-logo"></app-logo>
+    <div class="flex main-header">
+        <i class="pi pi-user"></i>
+        <p>{{ (userInfo$ | async)?.[0]?.firstName }} {{ (userInfo$ | async)?.[0]?.lastName }}</p>
+        <p-button label="Выход" (click)="logout()" styleClass="p-button-secondary p-button-text"
+            icon="pi pi-sign-out"></p-button>
+    </div>
+</header>

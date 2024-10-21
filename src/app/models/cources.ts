@@ -1,12 +1,21 @@
 export interface ICource {
     id: number;
     title: string;
-    creationDate: string;
+    topRated: boolean;
+    creationDate: Date;
     duration: number;
     description: string;
+    autors?: string
 }
 
 export interface ICourceResponse {
+    data: ICource[];
     content: ICource[];
-    totalElements: number;
+    pages: number;
+    next: number;
+}
+
+
+export interface IRequest {
+    [param: string]: string | number | boolean | (string | number | boolean)[];
 }

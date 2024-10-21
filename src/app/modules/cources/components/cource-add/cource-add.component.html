@@ -1,0 +1,73 @@
+<p-card>
+    <div class="card-header">
+        <div class="title">
+            <h3>{{ pageHeader }}</h3>
+        </div>
+    </div>
+    <div class="formgrid grid p-fluid" [formGroup]="courceAddForm">
+        <div class="field col-9">
+            <label for="title">Наименование*</label>
+            <input id="title" formControlName="title" pInputText />
+            <div *ngIf="title.invalid && (title.touched || title.dirty)" class="p-error">
+                <div *ngIf="title.hasError('required')">Поле обязательно к заполнению</div>
+                <div *ngIf="title.hasError('maxlength')">Максимальная длина {{
+                    title.errors?.['maxlength'].requiredLength }} символов</div>
+            </div>
+        </div>
+        <div class="field col-9">
+            <label for="description">Описание*</label>
+            <textarea id="description" formControlName="description" pInputTextarea [autoResize]="true"
+                class="ng-touched" style="min-height: 6rem"></textarea>
+            <div *ngIf="description.invalid && (description.touched || description.dirty)" class="p-error">
+                <div *ngIf="description.hasError('required')">Поле обязательно к заполнению</div>
+                <div *ngIf="description.hasError('maxlength')">Максимальная длина {{
+                    description.errors?.['maxlength'].requiredLength }} символов</div>
+            </div>
+
+        </div>
+        <div class="col-12 p-0">
+            <div class="flex align-items-center">
+                <div class="field col-9">
+                    <label for="duration">Продолжительность *</label>
+                    <p-inputNumber id="duration" formControlName="duration" [showButtons]="true"
+                        [useGrouping]="false"></p-inputNumber>
+                    <div *ngIf="duration.invalid && (duration.touched || duration.dirty)" class="p-error">
+                        <div *ngIf="duration.hasError('required')">Поле обязательно к заполнению</div>
+                        <div *ngIf="!duration.hasError('min') && duration.hasError('pattern')">Разрешено вводить только
+                            цифры
+                        </div>
+                        <div *ngIf="duration.hasError('min')">Минимальное значение {{ duration.errors?.['min']?.min }}
+                        </div>
+                        <div *ngIf="duration.hasError('max')">Максимальное значение {{ duration.errors?.['max']?.max }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div>
+                        <!-- <div class="mr-2 pt-2 info-text">{{ cource.duration | duration }}</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field col-9">
+            <label for="creationDate">Дата *</label>
+            <p-calendar id="creationDate" [showIcon]="true" formControlName="creationDate" dateFormat="dd/mm/yy"
+                [firstDayOfWeek]="1" appendTo="body"></p-calendar>
+            <div *ngIf="creationDate.invalid && (creationDate.touched || creationDate.dirty)" class="p-error">
+                <div *ngIf="creationDate.hasError('pattern')">Дата должна быть в формате ДД/ММ/ГГГГ</div>
+                <div *ngIf="creationDate.hasError('required')">Поле обязательно к заполнению</div>
+            </div>
+        </div>
+
+        <div class="field col-9">
+            <app-autors></app-autors>
+        </div>
+
+        <div class="col-9 flex justify-content-end gap-2">
+            <button pButton label="Отмена" class="p-button-sm p-button-secondary p-button-outlined" icon="pi pi-times"
+                (click)="cancelAction()"></button>
+            <button pButton type="submit" label="Сохранить" class="p-button-sm" [disabled]="!courceAddForm.valid"
+                icon="pi pi-check" (click)="saveCourse()"></button>
+        </div>
+    </div>
+</p-card>
