@@ -6,7 +6,15 @@
 }
 
 .app-search {
-    width: 90%;
+    width: 50%;
+}
+
+.btnAdd {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .cources-container {

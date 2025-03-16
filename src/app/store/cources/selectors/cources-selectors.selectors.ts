@@ -22,3 +22,8 @@ export const selectCourcesCount = createSelector(
     selectCources,
     (state) => state.length
 );
+
+export const selectTotalCount = createSelector(
+    selectCourcesState, 
+    (state) => state.totalCount
+);

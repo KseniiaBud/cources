@@ -12,7 +12,7 @@ export class CourcesService {
   ) { }
 
   public getCources(params: { _page: number; _per_page: number; _sort: string; title?: string;}): Observable<ICourceResponse> {
-    return this.httpClient.get<ICourceResponse>(`/videocourses`, { params }).pipe(map((data: ICourceResponse) => data));
+    return this.httpClient.get<ICourceResponse>(`/videocourses`, { params });
   }
 
   public getCourcesByTitle(str:string): Observable<ICourceResponse> {
@@ -28,14 +28,15 @@ export class CourcesService {
   }
 
   public getCourceById(id: string): Observable<ICource> {
-    return this.httpClient.get<ICource>(`/videocourses?id=${id}`).pipe(map((cource: ICource) => cource));
+    return this.httpClient.get<ICource>(`/videocourses/${id}`);
   }
 
   public createCource(courceItem: ICource): Observable<ICource> {
     return this.httpClient.post<ICource>(`/videocourses/`, { ...courceItem, id: Math.random()});
   }
-  public updateCource(courceItem: ICource): Observable<ICource> {
-    return this.httpClient.put<ICource>(`/videocourses/${courceItem.id}`, courceItem);
+
+  public updateCource(id: string, courceItem: ICource): Observable<ICource> {
+    return this.httpClient.put<ICource>(`/videocourses/${id}`, courceItem);
   }
   public deleteCource(id: number) {
     return this.httpClient.delete(`/videocourses/${id}`);

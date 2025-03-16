@@ -3,7 +3,7 @@ import { ICource } from 'src/app/models/cources';
 
 
 export const getCources = createAction('[Cource] Get Cources', props<{ params: { _page: number; _per_page: number; _sort: string; title?: string;} }>());
-export const getCourcesSuccess = createAction('[Cource] Get Cources Success', props<{ cources: ICource[] }>());
+export const getCourcesSuccess = createAction('[Cource] Get Cources Success', props<{ cources: ICource[]; totalCount: number }>());
 export const getCourcesFailure = createAction('[Cource] Get Cources Failure', props<{ error: unknown }>());
 
 export const getCourceById = createAction('[Cource] Get Cource By Id', props<{ id: string }>());
@@ -21,3 +21,4 @@ export const updateCourceFailure = createAction('[Cource] Update Cource Failure'
 export const deleteCource = createAction('[Cource] Delete Cource', props<{ id: number }>());
 export const deleteCourceSuccess = createAction('[Cource] Delete Cource Success', props<{ id: number }>());
 export const deleteCourceFailure = createAction('[Cource] Delete Cource Failure', props<{ error: unknown }>());
+

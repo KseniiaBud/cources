@@ -10,7 +10,7 @@ interface IData {
   providedIn: 'root'
 })
 export class BreadcrumbsService {
-  private _home: MenuItem = { icon: 'pi pi-home', label: ' Курсы', routerLink: '/cources' };
+  private _home: MenuItem = { icon: 'pi pi-home', label: 'Курсы', routerLink: '/cources' };
   private _model: MenuItem[] = [];
 
   set data(value: IData) {

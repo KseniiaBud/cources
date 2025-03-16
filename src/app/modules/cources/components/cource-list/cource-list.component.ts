@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
 import { BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectCources } from 'src/app/store/cources/selectors/cources-selectors.selectors';
+import { selectCources, selectTotalCount } from 'src/app/store/cources/selectors/cources-selectors.selectors';
 import { deleteCource, getCources } from 'src/app/store/cources/actions/cources-actions.actions';
 @Component({
   selector: 'app-cource-list',
@@ -21,7 +21,7 @@ export class CourceListComponent implements OnInit {
 
   public page = 1;
   public size = 5;
-  public totalCount$ = new BehaviorSubject<number>(0);
+  public totalCount$ = this.store.select(selectTotalCount);
   public loading$ = new BehaviorSubject<boolean>(false);
   public nextPage = 0;
 
@@ -34,19 +34,7 @@ export class CourceListComponent implements OnInit {
 
   onSearch(search: string): void {
     console.log("Поиск по введенному значению: " + search);
-    // of(search).pipe(
-    //   debounceTime(250),
-    //   filter((value) => !!value && value.length >= 3),
-    //   distinctUntilChanged(),
-    //   switchMap((value: any) => this.courcesService.getCourcesByTitle(value).pipe(
-    //     tap((cources) => {
-    //       this.cources$.next(cources.data as ICource[])
-    //       this.totalCount$.next(cources.pages);
-    //       this.nextPage = cources.next;
-    //       this.changeDetector.detectChanges();
-    //     })
-    //   ))
-    // ).subscribe();
+    this.store.dispatch(getCources({ params: { ...this.searchParams, title: search } }));
   }
   public searchParams = {
     _page: this.page,
@@ -71,13 +59,17 @@ export class CourceListComponent implements OnInit {
   }
 
   public delete(cource: ICource): void {
-    this.confirmationService.confirm({
+     this.confirmationService.confirm({
       acceptLabel: "Удалить",
       rejectLabel: "Отмена",
-      header: 'Подтверждение действия',
-      message: 'Вы действительно хотите удалить данный курс?',
+      header: 'Удалить курс?',
+      message: 'Вы действительно хотите удалить данный курс "'+ cource.title +'" ? ',
+      acceptButtonStyleClass: 'p-button-sm p-button-danger',
+      rejectButtonStyleClass: 'p-button-sm p-button-secondary p-button-outlined',
       accept: () => {
         this.store.dispatch(deleteCource({ id: cource.id }));
+        this.confirmationService.close();
+        this.store.dispatch(getCources({ params: this.searchParams }));
       },
       reject: () => {
         this.confirmationService.close();
@@ -91,5 +83,3 @@ export class CourceListComponent implements OnInit {
     this.store.dispatch(getCources({ params: this.searchParams }));
   }
 }
-
-

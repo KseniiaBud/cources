@@ -21,6 +21,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CourcesEffects } from './store/cources/effects/cources-effects.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { UserEffects } from './store/cources/effects/user.effects';
+import { ToastModule } from 'primeng/toast';
 
 registerLocaleData(localeRu);
 
@@ -36,6 +37,7 @@ registerLocaleData(localeRu);
     CourcesModule,
     LoginPagesModule,
     ButtonModule,
+    ToastModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],

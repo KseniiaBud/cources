@@ -1,30 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { userGetInfo, userLogout } from 'src/app/store/cources/actions/user.actions';
-import { selectUsers } from 'src/app/store/cources/selectors/user.selectors';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-  constructor(
-    private store: Store,
-    private router: Router,
-  ) { }
+export class HeaderComponent {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  public userInfo$ = this.store.select(selectUsers);
-
-  ngOnInit() {
-    this.store.dispatch(userGetInfo());
-    debugger
+  get isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
   }
-
-  logout() {
-    this.store.dispatch(userLogout());
-    this.router.navigate(['/login']);
-  }
-  
 }

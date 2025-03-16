@@ -14,7 +14,6 @@ export class UserEffects {
       switchMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
           map((users) => {
-            debugger
             localStorage.setItem('auth_token', users[0].fakeToken);
             this.router.navigate(['/cources']);
 
@@ -32,7 +31,6 @@ export class UserEffects {
       switchMap(() =>
         this.authService.getUserInfo().pipe(
           map((users) =>{
-            debugger
             return fromUserActions.userGetInfoSuccess({ users });
           }),
           catchError((error) => of(fromUserActions.userGetInfoFailure({ error }))),

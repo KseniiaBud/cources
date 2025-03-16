@@ -5,6 +5,7 @@ import { ICource, IRequest } from 'src/app/models/cources';
 export const courcesReducerFeatureKey = 'courcesReducer';
 
 export interface State {
+  totalCount: number,
   isLoading: boolean,
   params: IRequest,
   cource: ICource,
@@ -24,13 +25,14 @@ export const initialState: State = {
     creationDate: new Date,
     duration: 0,
     description: ''
-  }
+  },
+  totalCount: 0
 };
 
 export const reducer = createReducer(
   initialState,
   on(fromCourcesActions.getCources, (state, { params }) => ({ ...state, params, isLoading: true })),
-  on(fromCourcesActions.getCourcesSuccess, (state, { cources }) => ({ ...state, cources, isLoading: false })),
+  on(fromCourcesActions.getCourcesSuccess, (state, { cources, totalCount }) => ({ ...state, cources, isLoading: false, totalCount })),
   on(fromCourcesActions.getCourcesFailure, (state, { error }) => ({ ...state, error, isLoading: false })),
 
   on(fromCourcesActions.getCourceById, (state, { id }) => ({ ...state, id })),

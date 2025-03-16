@@ -12,7 +12,10 @@ export class CourcesEffects {
   public getCources$ = createEffect(() => this.actions$.pipe(
     ofType(fromCourcesActions.getCources),
     switchMap(({ params }) => this.courceService.getCources(params).pipe(
-      map((cources) => fromCourcesActions.getCourcesSuccess({ cources: cources.data as ICource[] }),
+      map((response) => fromCourcesActions.getCourcesSuccess({ 
+        cources: response.data as ICource[], 
+        totalCount: response.items as unknown as number, 
+      }),
         catchError((error) => of(fromCourcesActions.getCourcesFailure({ error })))
       ))
     )));
@@ -41,7 +44,7 @@ export class CourcesEffects {
   updateCource$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromCourcesActions.updateCource),
-      switchMap(({ cource }) => this.courceService.updateCource(cource).pipe(
+      switchMap(({ id, cource }) => this.courceService.updateCource(id + "", cource).pipe(
         map((cource) => fromCourcesActions.updateCourceSuccess({ cource })),
         tap(() => { this.router.navigate(['/cources']) }),
         catchError((error) => of(fromCourcesActions.updateCourceFailure({ error }))),

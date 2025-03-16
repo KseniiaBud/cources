@@ -9,6 +9,7 @@ export interface ICource {
 }
 
 export interface ICourceResponse {
+    items: unknown;
     data: ICource[];
     content: ICource[];
     pages: number;
