@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 import { ICource, ICourceResponse } from 'src/app/models/cources';
+import { CourcesService } from 'src/app/services/cources.service';
 
 @Component({
   selector: 'app-course-item',
@@ -17,43 +19,48 @@ export class CourseItemComponent {
   };
   @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
   @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
+  visible: boolean = false;
 
-  clickEdit(cource:ICource) { 
+  constructor(
+    private readonly courcesService: CourcesService
+  ) { }
+
+  clickEdit(cource: ICource) {
     this.edit.emit(cource);
-   }
-  del(cource:ICource) { 
-    this.delete.emit(cource);
+  }
+  del(cource: ICource) {
+    debugger
+         this.delete.emit(cource);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     console.log("ngOnInit");
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     console.log("ngOnChanges");
   }
 
-  ngDoCheck(){
+  ngDoCheck() {
     console.log("ngDoCheck");
   }
-  ngAfterContentInit(){
+  ngAfterContentInit() {
     console.log("ngAfterContentInit");
   }
 
-  ngAfterContentChecked(){
+  ngAfterContentChecked() {
     console.log("ngAfterContentChecked");
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     console.log("ngAfterViewInit");
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
     console.log("ngAfterViewChecked");
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     console.log("ngOnDestroy");
   }
-  
 }

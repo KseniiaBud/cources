@@ -10,6 +10,9 @@ import { CoueceBoundaryDirective } from './directives/couece-boundary.directive'
 import { CardModule } from 'primeng/card';
 import { FilterPipe } from './pipes/filter.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -25,8 +28,12 @@ import { OrderByPipe } from './pipes/order-by.pipe';
     InputTextModule,
     FormsModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    ConfirmDialogModule,
+    BrowserAnimationsModule,
+
   ],
+  providers: [ConfirmationService],
   exports: [CourceListComponent]
 })
 export class CourcesModule { }
