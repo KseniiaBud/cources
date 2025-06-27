@@ -22,10 +22,13 @@ import { CoreModule } from '../core/core.module';
 import { CourcesComponent } from './cources.component';
 import { MenubarModule } from 'primeng/menubar';
 import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs.component';
+import { ItemsNotFoundComponent } from "./components/items-not-found/items-not-found.component";
+
 @NgModule({
   declarations: [
     CourceListComponent,
     CourceAddComponent,
+    ItemsNotFoundComponent,
     CourseItemComponent,
     DurationPipe,
     CoueceBoundaryDirective,
@@ -49,12 +52,13 @@ import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs
     CalendarModule,
     AutorsComponent,
     CourcesRoutingModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [ConfirmationService],
   exports: [
     CourceListComponent,
     CourceAddComponent,
+    ItemsNotFoundComponent,
     CourcesComponent
   ]
 })

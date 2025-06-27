@@ -24,6 +24,6 @@ export class AuthService {
   }
 
   public getUserInfo(): Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(`/users?token=${localStorage.getItem('auth_token')}`);
+    return this.httpClient.get<IUser[]>(`/users?fakeToken=${localStorage.getItem('auth_token')}`);
   }
 }

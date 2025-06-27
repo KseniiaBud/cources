@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { Store } from '@ngrx/store';
+import { userLogin } from 'src/app/store/cources/actions/user.actions';
 
 @Component({
   selector: 'app-login-pages',
@@ -9,19 +9,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login-pages.component.scss']
 })
 export class LoginPagesComponent {
-  subscriptions: any;
-  constructor(private router: Router, private authService: AuthService) { }
-  @Output() userLoginInfo = new EventEmitter();
-  login(loginForm: NgForm): void {
-    this.authService.login(loginForm.value['email'], loginForm.value['password']).subscribe({
-      next: (data) => {
-        if (data && data.length > 0) {
-          localStorage.setItem('auth_token', data[0].fakeToken);
-          this.router.navigate(['/cources']);
-        } else {
-          console.log("Ошибка входа");
-        }
-      }
-    })
+  constructor(private store: Store) { }
+
+  login(loginForm: NgForm) {
+    this.store.dispatch(userLogin({ email: loginForm.value['email'], password: loginForm.value['password'] }));
   }
 }

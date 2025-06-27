@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UserComponent } from './components/user/user.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -19,6 +20,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     NotFoundComponent,
     SearchComponent,
     LoaderComponent,
+    UserComponent,
   ],
   imports: [
     CommonModule,
