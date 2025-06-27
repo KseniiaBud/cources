@@ -9,9 +9,14 @@ export interface ICource {
 }
 
 export interface ICourceResponse {
+    items: unknown;
     data: ICource[];
     content: ICource[];
     pages: number;
     next: number;
 }
 
+
+export interface IRequest {
+    [param: string]: string | number | boolean | (string | number | boolean)[];
+}

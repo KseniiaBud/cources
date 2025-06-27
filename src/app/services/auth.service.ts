@@ -11,8 +11,8 @@ export class AuthService {
     private readonly httpClient: HttpClient
   ) { }
 
-  public login(login: string, password:string): Observable<IUser> {
-    return this.httpClient.get<IUser>(`/users?email=${login}&password=${password}`);
+  public login(login: string, password:string): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(`/users?email=${login}&password=${password}`);
   }
 
   public logout() {
@@ -24,6 +24,6 @@ export class AuthService {
   }
 
   public getUserInfo(): Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(`/users?token=${localStorage.getItem('auth_token')}`);
+    return this.httpClient.get<IUser[]>(`/users?fakeToken=${localStorage.getItem('auth_token')}`);
   }
 }

@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,8 +11,17 @@ import { LoginPagesModule } from './modules/login-pages/login-pages.module';
 import { ButtonModule } from 'primeng/button';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { LoaderInterceptor } from './services/loader.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { CourcesEffects } from './store/cources/effects/cources-effects.effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { UserEffects } from './store/cources/effects/user.effects';
+import { ToastModule } from 'primeng/toast';
 
 registerLocaleData(localeRu);
 
@@ -22,12 +31,18 @@ registerLocaleData(localeRu);
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     CourcesModule,
     LoginPagesModule,
     ButtonModule,
-    HttpClientModule
+    ToastModule,
+    HttpClientModule,
+    StoreModule.forRoot(reducers),
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+    EffectsModule.forRoot([UserEffects, CourcesEffects ]),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     {
@@ -40,10 +55,10 @@ registerLocaleData(localeRu);
       useClass: AuthInterceptor,
       multi: true,
     },
-    { 
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
-      multi: true 
+      multi: true
     },
   ],
   bootstrap: [AppComponent]

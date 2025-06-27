@@ -1,4 +1,5 @@
 export interface IUser {
+    length: number;
     fakeToken: string;
     id: number;
     email: string;

@@ -5,7 +5,7 @@ import { CourceAddComponent } from './components/cource-add/cource-add.component
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import { DurationPipe } from './pipes/duration.pipe';
@@ -22,10 +22,13 @@ import { CoreModule } from '../core/core.module';
 import { CourcesComponent } from './cources.component';
 import { MenubarModule } from 'primeng/menubar';
 import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs.component';
+import { ItemsNotFoundComponent } from "./components/items-not-found/items-not-found.component";
+
 @NgModule({
   declarations: [
     CourceListComponent,
     CourceAddComponent,
+    ItemsNotFoundComponent,
     CourseItemComponent,
     DurationPipe,
     CoueceBoundaryDirective,
@@ -42,18 +45,20 @@ import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs
     InputTextareaModule,
     InputNumberModule,
     FormsModule,
+    ReactiveFormsModule,
     ButtonModule,
     CardModule,
     ConfirmDialogModule,
     CalendarModule,
     AutorsComponent,
     CourcesRoutingModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [ConfirmationService],
   exports: [
     CourceListComponent,
     CourceAddComponent,
+    ItemsNotFoundComponent,
     CourcesComponent
   ]
 })
