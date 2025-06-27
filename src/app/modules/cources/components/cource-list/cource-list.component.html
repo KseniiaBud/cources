@@ -1,1 +1,28 @@
-<p>cource-list works!</p>
+<div class="search">
+    <div>
+        <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input type="text" placeholder="Поиск" pInputText [(ngModel)]="search" />
+        </span>
+    </div>
+    <div class="btnSearch">
+        <p-button label="Поиск" (click)="clickSearch()"></p-button>
+    </div>
+    <div class="btnAdd">
+        <p-button icon="pi pi-plus" label="Добавить курс"></p-button>
+    </div>
+</div>
+<div>
+    <div class="cources-container" *ngFor="let cource of cources | orderBy: 'creationDate'">
+        <app-course-item [cource]="cource" (edit)="edit($event)" (delete)="delete($event)"></app-course-item>
+    </div>
+</div>
+<div class="noData" *ngIf="!cources.length">
+    <span>
+        Нет данных
+    </span>
+</div>
+<div class="loadMore">
+    <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
+        (click)="loadMore()"></p-button>
+</div>

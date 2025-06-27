@@ -1,0 +1,27 @@
+<div class="cource-item" *ngFor="let cource of cources">
+    <div class="course-item__header">
+        <div class="title">
+            <h3> {{ cource.title }}</h3>
+            <i class="pi pi-star-fill"></i>
+        </div>
+        <div class="schedule">
+            <span>
+                <i class="pi pi-clock"></i>
+                {{ cource.duration }}
+            </span>
+            <span>
+                <i class="pi pi-calendar"></i>
+                {{ cource.creationDate }}
+            </span>
+        </div>
+    </div>
+    <div class="course-item__description">
+        <span class="cource-desc">
+            {{ cource.description }}
+        </span>
+        <div class="buttons">
+            <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-text" (click)="clickEdit(cource)"></p-button>
+            <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger p-button-text" (click)="del(cource)"></p-button>
+        </div>
+    </div>
+</div>
