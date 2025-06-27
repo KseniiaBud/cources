@@ -3,27 +3,39 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LogoComponent } from './components/logo/logo.component';
-import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { ButtonModule } from 'primeng/button';
-import { MenubarModule } from 'primeng/menubar';
-
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { SearchComponent } from './components/search/search.component';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { LoaderComponent } from './components/loader/loader.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UserComponent } from './components/user/user.component';
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     LogoComponent,
-    BreadcrumbsComponent,
+    NotFoundComponent,
+    SearchComponent,
+    LoaderComponent,
+    UserComponent,
   ],
   imports: [
     CommonModule,
     ButtonModule,
-    MenubarModule,
+    BreadcrumbModule,
+    FormsModule,
+    InputTextModule,
+    ProgressSpinnerModule,
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     LogoComponent,
-    BreadcrumbsComponent,
+    SearchComponent,
+    LoaderComponent
   ]
 })
 export class CoreModule { }

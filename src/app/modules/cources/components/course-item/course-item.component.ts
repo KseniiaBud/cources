@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { ICource, ICourceResponse } from 'src/app/models/cources';
-import { CourcesService } from 'src/app/services/cources.service';
+import { ICource } from 'src/app/models/cources';
 
 @Component({
   selector: 'app-course-item',
@@ -23,15 +21,13 @@ export class CourseItemComponent {
   visible: boolean = false;
 
   constructor(
-    private readonly courcesService: CourcesService
   ) { }
 
   clickEdit(cource: ICource) {
     this.edit.emit(cource);
   }
   del(cource: ICource) {
-    debugger
-         this.delete.emit(cource);
+    this.delete.emit(cource);
   }
 
   ngOnInit() {

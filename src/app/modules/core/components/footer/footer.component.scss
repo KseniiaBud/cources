@@ -1,17 +1,18 @@
 .footer {
-    padding: 0px 56px;
-    gap: 10px;
-    background: #475569;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 10;
-    position:fixed;
-    p {
-        font-size: 14px;
-        line-height: 20px;
-        align-items: center;
-        color: #FFFFFF;
-    }
-
+  height: 2rem;
+  color: white;
+  font-size: 12px;
+  background-color: #3e434a;
+  display: flex;
+  flex-direction: row;
+  padding: 0px 56px;
+  flex-grow: 0;
+  align-items: center;
+  gap: 8px;
+  order: 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
 }

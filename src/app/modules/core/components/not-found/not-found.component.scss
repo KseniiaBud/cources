@@ -1,0 +1,13 @@
+.not-found-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 250px;
+    padding: 24px;
+    gap: 16px;
+    height: 301px;
+    border-radius: 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}

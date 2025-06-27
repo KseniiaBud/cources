@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { userLogin } from 'src/app/store/cources/actions/user.actions';
 
 @Component({
   selector: 'app-login-pages',
@@ -6,15 +9,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./login-pages.component.scss']
 })
 export class LoginPagesComponent {
-  @Output() userLoginInfo = new EventEmitter();
+  constructor(private store: Store) { }
 
-  public email: string = "";
-  public password: string = "";
-  login(): void {
-    let map = {
-      email: this.email,
-      password: this.password
-    }
-    this.userLoginInfo.emit(map);
+  login(loginForm: NgForm) {
+    this.store.dispatch(userLogin({ email: loginForm.value['email'], password: loginForm.value['password'] }));
   }
 }

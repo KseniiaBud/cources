@@ -1,0 +1,6 @@
+<div class="main-header ">
+  <i class="pi pi-user"></i>
+  <p>{{ (userInfo$ | async)?.[0]?.firstName }} {{ (userInfo$ | async)?.[0]?.lastName }}</p>
+  <p-button label="Выход" (click)="logout()" styleClass="p-button-secondary p-button-text"
+    icon="pi pi-sign-out"></p-button>
+</div>

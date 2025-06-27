@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ICource } from 'src/app/models/cources';
-import { CourcesService } from 'src/app/services/cources.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map, of, switchMap, take, tap } from 'rxjs';
+import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
+import { selectRouteParam } from 'src/app/store';
+import { createCource, getCourceById, updateCource } from 'src/app/store/cources/actions/cources-actions.actions';
+import { selectCource } from 'src/app/store/cources/selectors/cources-selectors.selectors';
 
 @Component({
   selector: 'app-cource-add',
@@ -8,37 +14,77 @@ import { CourcesService } from 'src/app/services/cources.service';
   styleUrls: ['./cource-add.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourceAddComponent {
-[x: string]: any;
-  @Input() cource: ICource = {
-    id: 0,
-    title: '',
-    creationDate: new Date(),
-    topRated: false,
-    duration: 0,
-    description: '',
-    autors: ""
-  };
-  @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
-  @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
-  @Output() public cancel: EventEmitter<ICource> = new EventEmitter<ICource>();
-  visible: boolean = false;
-  
+export class CourceAddComponent implements OnInit {
+  public pageHeader: string = "Новый курс";
+  public courceId = undefined as unknown as number;
 
+  public courceAddForm: FormGroup = this.fb.group({
+    title: ['', [Validators.required, Validators.maxLength(50)]],
+    description: ['', [Validators.required, Validators.maxLength(500)]],
+    duration: [null, [Validators.required, Validators.pattern(/^\d+$/), Validators.min(1), Validators.max(6000)]],
+    creationDate: [null, [Validators.required]],
+    authors: [null],
+  });
   constructor(
-    private readonly courcesService: CourcesService
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbsService: BreadcrumbsService,
+    private fb: FormBuilder,
+    private store: Store,
   ) { }
 
-  clickEdit(cource: ICource) {
-    this.edit.emit(cource);
-  }
-  del(cource: ICource) {
-    debugger
-         this.delete.emit(cource);
+  ngOnInit() {
+    const breadcrumbLabel = 'Новый курс';
+    const breadcrumbData = {
+      home: { label: 'Курсы', routerLink: '/cources' },
+      model: [{ label: breadcrumbLabel }],
+    };
+
+    this.store
+      .select(selectRouteParam('courceId'))
+      .pipe(
+        take(1),
+        switchMap((courceId) => {
+          if (courceId) {
+            this.courceId = Number(courceId);
+            this.pageHeader = 'Редактирование курса';
+            this.store.dispatch(getCourceById({ id: ""+this.courceId }));
+
+            return this.store.select(selectCource).pipe(
+              map((cource) => {
+                breadcrumbData.model[0].label = cource.title;
+                this.breadcrumbsService.data = breadcrumbData;
+                this.courceAddForm.patchValue(cource);
+              }),
+            );
+          } else {
+            this.breadcrumbsService.data = breadcrumbData;
+            return of(null);
+          }
+        }),
+      )
+      .subscribe();
   }
 
-  ngOnInit() {
-    console.log("ngOnInit");
+ 
+  get title(): FormControl {
+    return this.courceAddForm.get('title') as FormControl;
+  }
+
+  get description(): FormControl {
+    return this.courceAddForm.get('description') as FormControl;
+  }
+
+  get duration(): FormControl {
+    return this.courceAddForm.get('duration') as FormControl;
+  }
+
+  get creationDate(): FormControl {
+    return this.courceAddForm.get('creationDate') as FormControl;
+  }
+
+  get authors(): FormControl {
+    return this.courceAddForm.get('authors') as FormControl;
   }
 
   ngOnChanges() {
@@ -69,9 +115,15 @@ export class CourceAddComponent {
   }
 
   cancelAction() {
-    this.cancel.emit();
+    this.router.navigate(['cources']);
   }
   saveCourse() {
+    if (!this.courceAddForm.valid) return;
+    if (!this.courceId && this.courceId != 0) {
+      this.store.dispatch(createCource({ cource: this.courceAddForm.value }));
+    } else {
+      this.store.dispatch(updateCource({ id: this.courceId, cource: this.courceAddForm.value}));
+    }
 
   }
 }
