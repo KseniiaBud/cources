@@ -1,10 +1,13 @@
 import { ConfirmationService } from 'primeng/api';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ICource } from 'src/app/models/cources';
 import { FilterPipe } from '../../pipes/filter.pipe';
-import { CourcesService } from 'src/app/services/cources.service';
 import { Router } from '@angular/router';
 import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
+import { BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCources, selectTotalCount } from 'src/app/store/cources/selectors/cources-selectors.selectors';
+import { deleteCource, getCources } from 'src/app/store/cources/actions/cources-actions.actions';
 @Component({
   selector: 'app-cource-list',
   templateUrl: './cource-list.component.html',
@@ -13,70 +16,40 @@ import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourceListComponent implements OnInit {
-  public cources: ICource[] = [];
-  public search: string = '';
+  public cources$ = this.store.select(selectCources);
   public addCource: boolean = false;
-  public selectedCource: ICource = {
-    id: 0,
-    title: '',
-    topRated: false,
-    creationDate: new Date,
-    duration: 0,
-    description: ''
-  };
 
   public page = 1;
   public size = 5;
-  public totalCount = 0;
+  public totalCount$ = this.store.select(selectTotalCount);
+  public loading$ = new BehaviorSubject<boolean>(false);
   public nextPage = 0;
 
   constructor(
-    private readonly courcesService: CourcesService,
-    private confirmationService: ConfirmationService,
-    private router: Router,
-    private breadcrumbsService: BreadcrumbsService,
-    private changeDetector: ChangeDetectorRef
+    private readonly confirmationService: ConfirmationService,
+    private readonly router: Router,
+    private readonly breadcrumbsService: BreadcrumbsService,
+    private readonly store: Store,
   ) { }
 
-  clickSearch(): void {
-    console.log("Поиск по введенному значению: " + this.search);
-    this.getCources({ serch: true })
+  onSearch(search: string): void {
+    console.log("Поиск по введенному значению: " + search);
+    this.store.dispatch(getCources({ params: { ...this.searchParams, title: search } }));
   }
+  public searchParams = {
+    _page: this.page,
+    _per_page: this.size,
+    _sort: 'creationDate'
+  };
 
   ngOnInit(): void {
     this.breadcrumbsService.data = {
       home: this.breadcrumbsService.home,
       model: [],
     }
-
-    this.getCources();
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 
-  public getCources({ loadMore = false, serch = false } = {}) {
-    if (loadMore) {
-      this.page++;
-    }
-
-    if (serch) {
-      this.cources = [];
-      this.page = 1
-    }
-    const params = {
-      _page: this.page,
-      _per_page: this.size,
-      _sort: 'creationDate',
-      // поиск по полному совпадению(зависит так же от регистра в базе), не работает по `ci(contains(${this.search}))`
-      // title: `ci(contains(${this.search}))`
-      title: this.search
-    };
-
-    this.courcesService.getCources(params).subscribe((response) => {
-      this.cources = this.cources.concat(response.data as ICource[]);
-      this.totalCount = response.pages;
-      this.nextPage = response.next;
-      this.changeDetector.detectChanges();
-    });
-  }
   public addCourcesItem(): void {
     this.router.navigate(['cources/new']);
   }
@@ -86,15 +59,17 @@ export class CourceListComponent implements OnInit {
   }
 
   public delete(cource: ICource): void {
-    this.confirmationService.confirm({
+     this.confirmationService.confirm({
       acceptLabel: "Удалить",
       rejectLabel: "Отмена",
-      header: 'Подтверждение действия',
-      message: 'Вы действительно хотите удалить данный курс?',
+      header: 'Удалить курс?',
+      message: 'Вы действительно хотите удалить данный курс "'+ cource.title +'" ? ',
+      acceptButtonStyleClass: 'p-button-sm p-button-danger',
+      rejectButtonStyleClass: 'p-button-sm p-button-secondary p-button-outlined',
       accept: () => {
-        this.courcesService.deleteCource(cource.id).subscribe(() => {
-          this.getCources();
-        });
+        this.store.dispatch(deleteCource({ id: cource.id }));
+        this.confirmationService.close();
+        this.store.dispatch(getCources({ params: this.searchParams }));
       },
       reject: () => {
         this.confirmationService.close();
@@ -104,8 +79,7 @@ export class CourceListComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.getCources({ loadMore: true });
+    this.searchParams = { ...this.searchParams, _per_page: Number(this.searchParams['_per_page']) + 5 };
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 }
-
-

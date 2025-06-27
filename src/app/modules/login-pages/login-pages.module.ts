@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginPagesComponent } from './login-pages.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ButtonModule,
     FormsModule,
+    CardModule,
   ], 
   exports: [LoginPagesComponent]
 })

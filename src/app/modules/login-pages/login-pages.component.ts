@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { userLogin } from 'src/app/store/cources/actions/user.actions';
 
 @Component({
   selector: 'app-login-pages',
@@ -8,18 +9,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login-pages.component.scss']
 })
 export class LoginPagesComponent {
-  constructor(private router: Router, private authService: AuthService) {}
-  @Output() userLoginInfo = new EventEmitter();
-  public email: string = "";
-  public password: string = "";
-  login(): void {
+  constructor(private store: Store) { }
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (data) => {
-        localStorage.setItem('auth_token', data[0].fakeToken);
-        this.router.navigate(['/cources']);
-      }
-    });
-
+  login(loginForm: NgForm) {
+    this.store.dispatch(userLogin({ email: loginForm.value['email'], password: loginForm.value['password'] }));
   }
 }

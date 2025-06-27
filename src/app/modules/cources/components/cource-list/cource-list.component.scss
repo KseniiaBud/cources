@@ -5,14 +5,16 @@
     padding: 10px 0px 10px 0px;
 }
 
-.btnSearch {
+.app-search {
     width: 50%;
-    padding-left: 5px;
 }
 
 .btnAdd {
     width: 50%;
-    text-align: end;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .cources-container {
