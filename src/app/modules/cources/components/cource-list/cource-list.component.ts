@@ -1,52 +1,53 @@
+import { ConfirmationService } from 'primeng/api';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ICource } from 'src/app/models/cources';
 import { FilterPipe } from '../../pipes/filter.pipe';
-import { CourcesService } from 'src/app/services/cources.service';
-import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
-
+import { BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCources, selectTotalCount } from 'src/app/store/cources/selectors/cources-selectors.selectors';
+import { deleteCource, getCources } from 'src/app/store/cources/actions/cources-actions.actions';
 @Component({
   selector: 'app-cource-list',
   templateUrl: './cource-list.component.html',
   styleUrls: ['./cource-list.component.scss'],
   providers: [FilterPipe],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourceListComponent {
-  public cources: ICource[] = [];
-  public filter_cources: ICource[] = [];
-  public search: string = '';
-  public addCource:boolean = false;
-  public selectedCource: ICource = {
-    id: 0,
-    title: '',
-    topRated: false,
-    creationDate: new Date,
-    duration: 0,
-    description: ''
-  };
-  constructor(
-    private filterPipe: FilterPipe,
-    private readonly courcesService: CourcesService,
-    private confirmationService: ConfirmationService,
-    private router: Router,
-    private breadcrumbsService: BreadcrumbsService,
-  ) {}
+export class CourceListComponent implements OnInit {
+  public cources$ = this.store.select(selectCources);
+  public addCource: boolean = false;
 
-  clickSearch(): void {
-    console.log("Поиск по введенному значению: " + this.search);
-    this.cources = this.courcesService.getCources();
-    this.filter_cources =  this.filterPipe.transform(this.cources, this.search);
+  public page = 1;
+  public size = 5;
+  public totalCount$ = this.store.select(selectTotalCount);
+  public loading$ = new BehaviorSubject<boolean>(false);
+  public nextPage = 0;
+
+  constructor(
+    private readonly confirmationService: ConfirmationService,
+    private readonly router: Router,
+    private readonly breadcrumbsService: BreadcrumbsService,
+    private readonly store: Store,
+  ) { }
+
+  onSearch(search: string): void {
+    console.log("Поиск по введенному значению: " + search);
+    this.store.dispatch(getCources({ params: { ...this.searchParams, title: search } }));
   }
+  public searchParams = {
+    _page: this.page,
+    _per_page: this.size,
+    _sort: 'creationDate'
+  };
 
   ngOnInit(): void {
-    this.cources = this.courcesService.getCources();
-    this.filter_cources = this.cources;
     this.breadcrumbsService.data = {
       home: this.breadcrumbsService.home,
       model: [],
     }
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 
   public addCourcesItem(): void {
@@ -58,32 +59,27 @@ export class CourceListComponent {
   }
 
   public delete(cource: ICource): void {
-    this.confirmationService.confirm({
-      acceptLabel:"Удалить",
-      rejectLabel:"Отмена",
-      header: 'Подтверждение действия',
-      message: 'Вы действительно хотите удалить данный курс?',
+     this.confirmationService.confirm({
+      acceptLabel: "Удалить",
+      rejectLabel: "Отмена",
+      header: 'Удалить курс?',
+      message: 'Вы действительно хотите удалить данный курс "'+ cource.title +'" ? ',
+      acceptButtonStyleClass: 'p-button-sm p-button-danger',
+      rejectButtonStyleClass: 'p-button-sm p-button-secondary p-button-outlined',
       accept: () => {
-        this.courcesService.deleteCource(cource.id);
-        this.cources = this.courcesService.getCources();
+        this.store.dispatch(deleteCource({ id: cource.id }));
+        this.confirmationService.close();
+        this.store.dispatch(getCources({ params: this.searchParams }));
       },
       reject: () => {
         this.confirmationService.close();
-      }, 
+      },
       key: "cd"
     });
   }
 
   public loadMore(): void {
-    console.log("Загрузить еще")
-  }
-
-  public cancelAction(): void {
-    this.addCource = false;
-  }
-  public editAction(): void {
-    this.addCource = false;
+    this.searchParams = { ...this.searchParams, _per_page: Number(this.searchParams['_per_page']) + 5 };
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 }
-
-

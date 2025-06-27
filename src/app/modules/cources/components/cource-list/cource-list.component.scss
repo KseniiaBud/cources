@@ -5,14 +5,16 @@
     padding: 10px 0px 10px 0px;
 }
 
-.btnSearch {
+.app-search {
     width: 50%;
-    padding-left: 5px;
 }
 
 .btnAdd {
     width: 50%;
-    text-align: end;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .cources-container {
@@ -20,7 +22,7 @@
     align-items: center;
     padding: 5px;
     gap: 24px;
-    height: 150px;
+    min-height: 150px;
 }
 
 .loadMore {
@@ -39,4 +41,5 @@
     justify-content: center;
     align-items: center;
     padding: 12px 18px;
+    min-height: 150px;
 }
