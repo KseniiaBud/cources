@@ -1,28 +1,26 @@
 <div class="search">
-    <div>
-        <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" placeholder="Поиск" pInputText [(ngModel)]="search" />
-        </span>
-    </div>
-    <div class="btnSearch">
-        <p-button label="Поиск" (click)="clickSearch()"></p-button>
+    <div class="app-search">
+        <app-search (search)="onSearch($event)"></app-search>
     </div>
     <div class="btnAdd">
-        <p-button icon="pi pi-plus" label="Добавить курс"></p-button>
+        <p-button icon="pi pi-plus" label="Добавить курс" (click)="addCourcesItem()"></p-button>
     </div>
 </div>
-<div>
-    <div class="cources-container" *ngFor="let cource of cources | orderBy: 'creationDate'">
-        <app-course-item [cource]="cource" (edit)="edit($event)" (delete)="delete($event)"></app-course-item>
+
+<div *ngIf="(cources$ | async) || [] as cources">
+    <div class="cources-container" *ngIf="cources.length > 0">
+        <app-course-item *ngFor="let cource of cources" [cource]="cource" (edit)="editCourcesItem($event)"
+            (delete)="delete($event)"></app-course-item>
     </div>
+
+    <div class="loadMore" *ngIf="((totalCount$ | async) || 0) > cources.length">
+        <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
+            (click)="loadMore()"></p-button>
+    </div>
+
+    <div *ngIf="cources.length === 0 && (loading$ | async) === false">
+        <app-items-not-found></app-items-not-found>
+      </div>
 </div>
-<div class="noData" *ngIf="!cources.length">
-    <span>
-        Нет данных
-    </span>
-</div>
-<div class="loadMore">
-    <p-button styleClass="p-button-rounded p-button-secondary p-button-outlined" label="Загрузить еще"
-        (click)="loadMore()"></p-button>
-</div>
+
+<p-confirmDialog  #cd key="cd" appendTo="body" [breakpoints]="{ '960px': '75vw', '640px': '100vw' }" [style]="{ width: '50vw' }"> </p-confirmDialog>

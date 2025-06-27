@@ -5,9 +5,18 @@ export interface ICource {
     creationDate: Date;
     duration: number;
     description: string;
+    autors?: string
 }
 
 export interface ICourceResponse {
+    items: unknown;
+    data: ICource[];
     content: ICource[];
-    totalElements: number;
+    pages: number;
+    next: number;
+}
+
+
+export interface IRequest {
+    [param: string]: string | number | boolean | (string | number | boolean)[];
 }

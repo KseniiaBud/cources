@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ICource, ICourceResponse } from 'src/app/models/cources';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ICource } from 'src/app/models/cources';
 
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.scss']
+  styleUrls: ['./course-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseItemComponent {
   @Input() cource: ICource = {
@@ -17,43 +18,46 @@ export class CourseItemComponent {
   };
   @Output() public edit: EventEmitter<ICource> = new EventEmitter<ICource>();
   @Output() public delete: EventEmitter<ICource> = new EventEmitter<ICource>();
+  visible: boolean = false;
 
-  clickEdit(cource:ICource) { 
+  constructor(
+  ) { }
+
+  clickEdit(cource: ICource) {
     this.edit.emit(cource);
-   }
-  del(cource:ICource) { 
+  }
+  del(cource: ICource) {
     this.delete.emit(cource);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     console.log("ngOnInit");
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     console.log("ngOnChanges");
   }
 
-  ngDoCheck(){
+  ngDoCheck() {
     console.log("ngDoCheck");
   }
-  ngAfterContentInit(){
+  ngAfterContentInit() {
     console.log("ngAfterContentInit");
   }
 
-  ngAfterContentChecked(){
+  ngAfterContentChecked() {
     console.log("ngAfterContentChecked");
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     console.log("ngAfterViewInit");
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
     console.log("ngAfterViewChecked");
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     console.log("ngOnDestroy");
   }
-  
 }

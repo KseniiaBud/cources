@@ -1,6 +1,50 @@
-.page {
-    background: #E2E8F0;
-    padding: 16px 56px 16px 56px;
-    gap: 10px;
-    height: 93dvh;
-}
+:host {
+    font-family: var(--font-family);
+  }
+  
+  ::ng-deep {
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+  
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    main {
+      padding: 12px 56px 12px 56px;
+      flex-grow: 1;
+      background-color: aliceblue;
+    }
+  
+    .not-found-container {
+      background-color: white;
+      border-radius: 0.4rem;
+    }
+  
+    .big-tag {
+      background-color: aliceblue;
+      color: #3b82f6;
+      border-radius: 50%;
+      width: 6rem;
+      height: 6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & i,
+      span {
+        font-size: 2rem;
+      }
+    }
+  
+    .p-breadcrumb {
+      ul li.p-breadcrumb-chevron:last-child {
+        display: none;
+      }
+    }
+  }
+  

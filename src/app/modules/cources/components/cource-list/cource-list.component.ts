@@ -1,82 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ICource } from 'src/app/models/cources';
 import { FilterPipe } from '../../pipes/filter.pipe';
-
+import { Router } from '@angular/router';
+import { BreadcrumbsService } from 'src/app/services/breadcrumbs.service';
+import { BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCources, selectTotalCount } from 'src/app/store/cources/selectors/cources-selectors.selectors';
+import { deleteCource, getCources } from 'src/app/store/cources/actions/cources-actions.actions';
 @Component({
   selector: 'app-cource-list',
   templateUrl: './cource-list.component.html',
   styleUrls: ['./cource-list.component.scss'],
-  providers: [FilterPipe]
+  providers: [FilterPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourceListComponent {
-  public cources: ICource[] = [];
-  public filter_cources: ICource[] = [];
-  public search: string = '';
-  constructor(private filterPipe: FilterPipe) {}
-  clickSearch(): void {
-    console.log("Поиск по введенному значению: " + this.search);
-    this.filter_cources =  this.filterPipe.transform(this.cources, this.search);
+export class CourceListComponent implements OnInit {
+  public cources$ = this.store.select(selectCources);
+  public addCource: boolean = false;
+
+  public page = 1;
+  public size = 5;
+  public totalCount$ = this.store.select(selectTotalCount);
+  public loading$ = new BehaviorSubject<boolean>(false);
+  public nextPage = 0;
+
+  constructor(
+    private readonly confirmationService: ConfirmationService,
+    private readonly router: Router,
+    private readonly breadcrumbsService: BreadcrumbsService,
+    private readonly store: Store,
+  ) { }
+
+  onSearch(search: string): void {
+    console.log("Поиск по введенному значению: " + search);
+    this.store.dispatch(getCources({ params: { ...this.searchParams, title: search } }));
   }
+  public searchParams = {
+    _page: this.page,
+    _per_page: this.size,
+    _sort: 'creationDate'
+  };
 
   ngOnInit(): void {
-    let cur = new Date();
-    this.cources = [
-      {
-        id: 1,
-        title: "Reprehenderit est veniam elit",
-        creationDate: new Date(),
-        duration: 61,
-        topRated: false,
-        description: "Consectetur veniam non nulla in laboris minim ipsum. Dolor aliqua irure sint do irure magna tempor culpa quis. Deserunt amet occaecat velit sit."
-      },
-      {
-        id: 2,
-        title: "Magna Excepteur aute Deserunt",
-        creationDate: new Date(),
-        duration: 63,
-        topRated: true,
-        description: "Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor."
-      },
-      {
-        id: 3,
-        title: "Reprehenderit eiusmod nostrud amet",
-        creationDate: new Date(),
-        duration: 20,
-        topRated: true,
-        description: "Est consequat deserunt officia fugiat culpa in aliquip consectetur. Est nostrud occaecat cillum elit officia officia ea magna et minim officia commodo sunt. Deserunt duis minim magna nostrud enim enim commodo sit elit nostrud cillum aliquip est qui."
-      },
-      {
-        id: 4,
-        title: "Sit voluptate eiusmod ea",
-        creationDate: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - 28),
-        duration: 125,
-        topRated: false,
-        description: "Commodo id sunt sunt adipisicing et aliquip voluptate laborum consectetur. Occaecat nisi sint exercitation ullamco adipisicing irure est in consectetur aute voluptate. Ea pariatur dolor anim ea reprehenderit ut non occaecat magna adipisicing exercitation nisi consequat."
-      },
-      {
-        id: 5,
-        title: "Duis mollit reprehenderit ad",
-        creationDate: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 3),
-        duration: 180,
-        topRated: true,
-        description: "Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud."
-      }
-    ];
-
-    this.filter_cources = this.cources;
+    this.breadcrumbsService.data = {
+      home: this.breadcrumbsService.home,
+      model: [],
+    }
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 
-  public edit(cource: ICource): void {
+  public addCourcesItem(): void {
+    this.router.navigate(['cources/new']);
+  }
+  public editCourcesItem(cource: ICource): void {
+    this.router.navigate(['cources', cource.id]);
     console.log(cource);
   }
 
   public delete(cource: ICource): void {
-    console.log(cource.id);
+     this.confirmationService.confirm({
+      acceptLabel: "Удалить",
+      rejectLabel: "Отмена",
+      header: 'Удалить курс?',
+      message: 'Вы действительно хотите удалить данный курс "'+ cource.title +'" ? ',
+      acceptButtonStyleClass: 'p-button-sm p-button-danger',
+      rejectButtonStyleClass: 'p-button-sm p-button-secondary p-button-outlined',
+      accept: () => {
+        this.store.dispatch(deleteCource({ id: cource.id }));
+        this.confirmationService.close();
+        this.store.dispatch(getCources({ params: this.searchParams }));
+      },
+      reject: () => {
+        this.confirmationService.close();
+      },
+      key: "cd"
+    });
   }
 
   public loadMore(): void {
-    console.log("Загрузить еще")
+    this.searchParams = { ...this.searchParams, _per_page: Number(this.searchParams['_per_page']) + 5 };
+    this.store.dispatch(getCources({ params: this.searchParams }));
   }
 }
-
-
